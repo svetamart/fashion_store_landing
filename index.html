@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин Одежды</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
+    <style>
+
+        .carousel-item {
+            min-height: 500px;
+        }
+        #productCarousel {
+            margin-bottom: 60px;
+        }
+        .parallax {
+            background-image: url('images/image.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+        }
+        .text-main {
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            color: #2f0d0d;
+            font-weight: 500;
+        }
+        .brand-name {
+            font-weight: 900;
+        }
+        .overlay {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(255,250,245,0.40388655462184875) 26%, rgba(255,250,245,0.4) 65%, rgba(0,212,255,0) 100%);
+            backdrop-filter: blur(5px); 
+            z-index: -1; 
+            border-radius: 5px;
+            }
+        .category {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .category-img {
+            width: 100%;
+            height: 500px; 
+            object-fit: cover;
+            object-position: center bottom;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .category:hover .category-img {
+            transform: scale(1.05);
+        }
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .category:hover .category-overlay {
+            opacity: 1;
+        }
+        .category-title {
+            font-size: 24px;
+            text-align: center;
+        }
+        .subscribe-block {
+            background: url('images/zhenskie-aksessuary.jpg') fixed center no-repeat;
+            background-size: cover;
+            padding: 60px 0;
+        }
+        .subscribe-form {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .subscribe-form .form-control {
+            border-color: #fff;
+            color: black;
+        }
+        .subscribe-form .btn-primary {
+            background-color: #ff4c4c;
+            border-color: #ff4c4c;
+        }
+        .subscribe-message {
+            margin-top: 10px;
+        }
+        .smaller-header {
+            font-size: 80%; 
+            font-weight: normal; 
+        }
+        .social-icons {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .social-icons li {
+            margin: 0 10px;
+        }
+        .social-icons a {
+            color: #333;
+            font-size: 24px;
+        }
+        .logo {
+            width: 60px; 
+            margin-right: 10px; 
+        }
+        .info {
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+      
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        footer {
+            font-family: 'Montserrat', sans-serif;
+        }
+      
+        #contacts {
+            text-align: center;
+            padding: 10px;
+        }
+        #maps {
+            height: 70vh;
+            width: 100%;
+            position: relative;
+            margin-top: 20px; 
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        .bl_center {
+            width: 100%;
+            right: 50px; 
+            padding: 20px;
+        }
+      
+        .text-center {
+            margin-bottom: 20px;
+        }
+        .list i {
+            font-size: 1.5rem; 
+        }
+  </style>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="images/logo.png" alt="Логотип" class="logo">
+            TrendBlend
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                <a class="nav-link" href="#">Главная</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Товары</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Акции</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Коллекции</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#contacts">Контакты</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    
+
+<div class="parallax">
+    <div class="text-main">
+        <div class="overlay"></div>
+        <h1 class="brand-name mb-4">TrendBlend</h1>
+        <p>Стиль в каждой детали</p>
+    </div>
+</div>
+
+<!-- Карусель с товарами -->
+    
+ <div class="container mt-5">
+    <h2 class="text-center mb-4">Новая коллекция</h2>
+    <div id="productCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/t-shirt.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Футболка в полоску</h5>
+                                <p class="card-text">999₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/jeans.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Джинсы</h5>
+                                <p class="card-text">2999₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/skirt.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Юбка миди</h5>
+                                <p class="card-text">1599₽</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/jacket.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Пиджак oversize</h5>
+                                <p class="card-text">3599₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/socks.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Гольфы</h5>
+                                <p class="card-text">399₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/shoes.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Босоножки</h5>
+                                <p class="card-text">2799₽</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/trousers.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Брюки классические</h5>
+                                <p class="card-text">2599₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/dress.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Платье</h5>
+                                <p class="card-text">1399₽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="images/sweatshirt.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Свитшот женский</h5>
+                                <p class="card-text">2799₽</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+    
+    <!-- Блок с категориями -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Категории</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="#" class="category-link">
+                <div class="category">
+                <img src="images/new.png" alt="Новинки" class="category-img" style="object-position: center top">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Новинки</h3>
+                    </div>
+                </div>
+                </a>
+            </div>
+        <div class="col-md-6">
+            <a href="#" class="category-link">
+            <div class="category">
+            <img src="images/sweater.jpg" alt="Одежда" class="category-img">
+                <div class="category-overlay">
+                    <h3 class="category-title">Одежда</h3>
+                </div>
+            </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="#" class="category-link">
+            <div class="category">
+            <img src="images/shoes.webp" alt="Обувь" class="category-img">
+                <div class="category-overlay">
+                    <h3 class="category-title">Обувь</h3>
+                </div>
+            </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="#" class="category-link">
+            <div class="category">
+            <img src="images/bag.jpg" alt="Аксессуары" class="category-img">
+                <div class="category-overlay">
+                    <h3 class="category-title">Аксессуары</h3>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+</div>
+    
+
+<div class="info container mt-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="text-center mb-3">Магазин модной женской одежды TrendBlend</h3>
+                <p>TrendBlend - бренд для молодых, ярких, активных и успешных девушек. В нашем магазине представлены самые актуальные модели одежды и аксессуаров от собственных дизайнеров бренда, которые точно знают, как подчеркнуть женственность и чувственность, стиль и чувство вкуса каждой девушки. 
+                <p>Наши коллекции объединяют в себе современные тренды и классические элементы, чтобы каждая деталь вашего образа была идеальной. В TrendBlend ты можешь найти варианты для любого случая - будь то повседневная прогулка, деловая встреча или особенное мероприятие.</p>
+                <p>Выбирай TrendBlend и создавай свой неповторимый стиль!</p>
+        </div>
+    </div>
+</div>
+    
+    <section id="contacts" class="map">
+    <h3 class="text-center">Как нас найти</h3>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="maps" class="bl">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    <section id="contacts">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12">
+                            <div class="bl_center">
+                                <h3 class="text-center">Наши контакты</h3>
+                                <div class="list">
+                                    <i class="fa fa-phone fa-2x" aria-hidden="true"></i>
+                                    <span class="b h6">
+                                        <a class="page-header__phone" href="tel:+78122599691">
+                                            <b>+7 (812) 259-96-91</b>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="list h6">
+                                    <i class="fa fa-clock-o fa-2x" aria-hidden="true"></i>
+                                    <br>
+                                    Работаем ежедневно 10:00-22:00<br>
+                                </div>
+                                <div class="list h6">
+                                    <i class="fa fa-map-marker fa-2x" aria-hidden="true"></i>
+                                    <span class="b"><b> Санкт-Петербург, Владимирский проспект, 10 </b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</section>
+
+        <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init() {
+            var myMap = new ymaps.Map('map', {
+                center: [59.930584, 30.348198],
+                zoom: 17,
+                controls: [
+                    'zoomControl',
+                    'rulerControl',
+                    'routeButtonControl',
+                    'trafficControl',
+                    'fullscreenControl'
+                ]
+            });
+
+            var myPlacemark = new ymaps.Placemark([59.930584, 30.348198], null, {
+                preset: 'islands#blueDotIcon'
+            });
+            myMap.geoObjects.add(myPlacemark);
+        }
+    </script>
+    
+    <div class="subscribe-block">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="subscribe-form">
+              <h3 class="text-center text-white mb-4"><span class="smaller-header">Подпишись на нашу рассылку и получи</span> скидку 15%</h3>
+            <form method="post" id="subscribeForm" class="text-center">
+              <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="Введите ваш email" required>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Подписаться</button>
+                </div>
+              </div>
+              <div class="subscribe-message text-white"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    
+<footer class="bg-light text-dark text-center py-4">
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <p>Подпишитесь на нас в соцсетях:</p>
+            <ul class="social-icons">
+                <li><a href="#" target="_blank"><i class="fab fa-facebook"></i></a></li>
+                <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            </ul>
+            <p>Copyright © 2023 TrendBlend. Все права защищены.</p>
+        </div>
+        </div>
+    </div>
+</footer>
+    
+    <script>
+        $(document).ready(function() {
+          $("#subscribeForm").submit(function(event) {
+            event.preventDefault();
+
+            if (this.checkValidity()) {
+              // Заглушка для успешной отправки формы
+              setTimeout(function() {
+                $('.subscribe-message').html('<p class="text-white">Спасибо за подписку!</p>');
+              }, 1000);
+            } else {
+              $('.subscribe-message').html('<p class="text-danger">Пожалуйста, заполните все обязательные поля.</p>');
+            }
+          });
+        });
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
